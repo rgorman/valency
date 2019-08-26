@@ -34,6 +34,7 @@ holder.l <- vector(mode = "list", length = length(files.v))
 seq_along(files.v)
 
 
+
 for (k in 4) {
   # read xml structure from file to .R object
   doc.object <-
@@ -45,6 +46,7 @@ for (k in 4) {
   
   sent.list <- xmlApply(sent.nodes, xmlToList)
   
+ 
   
   for (i in seq_along(sent.list)) {
     
@@ -72,6 +74,7 @@ for (k in 4) {
     colnames(z) <- y
     
     z <- mutate(z, locator = paste0("sent_", i, "_token_", z$id))
+    z <- mutate(z, sent_id = i)
     
     # z <-      as_tibble(z)
     z$id <- as.integer(z$id)
@@ -883,3 +886,20 @@ for (i in seq_along(q)) {
   test.tib$`paste0(...)` %>%
     str_detect("NA")
   
+  
+  ###########
+  
+  s.w <- treebank.data.df %>%
+    filter(sent_id == part_1[i]) %>%
+    filter(id == 1:3) %>%
+    select(form) %>%
+    unlist() %>%
+    paste( collapse = " ") %>%
+    paste("...")
+  
+  treebank.data.df %>%
+    filter(sent_id == part_1[i]) %>%
+    filter(id == 1) %>%
+    select(sent_id, )
+  
+  sent.list[[1]]$.attrs[3]
