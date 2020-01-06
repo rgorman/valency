@@ -25,8 +25,8 @@ y <- c("id", "form", "lemma", "postag", "relation", "head", "artificial", "sente
 
 
 
-k <- 123
-i <- 6
+k <- 12
+i <- 44
 files.v[k]
 
 sentence.counter.v <- 1
@@ -497,21 +497,54 @@ for (k in seq_along(files.v) ) {
     
     
     a <- which(z$is_bridge_to_multiple_sbjs == TRUE & z$parent_relation == "coord" )
-    b <- z$head[a] %>%
-      as.integer()
+   
+    b <- z$head[a]
+    
     
     z[b, "is_bridge_2_to_multi_sbjs"] <- TRUE
     
     #index of dep bridge to sbjs
     
-    for (n in seq_along(a)) {
-      c_nomen <- paste0("index_of_dep_bridge_1_to_sbjs_", n)
-      z[b, c_nomen] <- a
+    b_1 <- NULL
+    b_2 <- NULL
+    b_3 <- NULL
+    b_4 <- NULL
+    
+  which(z$is_bridge_to_multiple_sbjs & z$head == b[2])
+    
+   
+    
+    for (n in seq_along(c)) {
+      str <- paste0("b", "_", n)
+      values <- which(z$is_bridge_to_multiple_sbjs & z$head == b[n])
+      assign(str,values)
       
     }
+  
+  for (n in seq_along(b_1)) {
+    c_nomen <- paste0("index_of_dep_bridge_1_to_sbjs_", n)
+    z[b[1], c_nomen] <- b_1[n]
+  }
+   
+  for (n in seq_along(b_2)) {
+    c_nomen <- paste0("index_of_dep_bridge_1_to_sbjs_", n)
+    z[b[2], c_nomen] <- b_2[n]
+  } 
+  
+  for (n in seq_along(b_3)) {
+    c_nomen <- paste0("index_of_dep_bridge_1_to_sbjs_", n)
+    z[b[3], c_nomen] <- b_3[n]
+  } 
+  
+  for (n in seq_along(b_4)) {
+    c_nomen <- paste0("index_of_dep_bridge_1_to_sbjs_", n)
+    z[b[4], c_nomen] <- b_[n]
+  }
+  
+  
     
     
-    which(z$head == b & z$self_relation == "coord")
+  
     
     #######
     #######
