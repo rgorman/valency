@@ -22,8 +22,8 @@ y <- c("id", "form", "lemma", "postag", "relation", "head", "artificial", "sente
 
 
 
-k <- 1
-i <- 154
+k <- 12
+i <- 44
 files.v[k]
 
 sentence.counter.v <- 1
@@ -134,7 +134,7 @@ for (k in seq_along(files.v) ) {
     
     d <- unique(b)
     
-    if (length(a) == length(d)) {
+    if (length(a) > 0 &  length(a) == length(d)) {
       
       z[a, "is_shared_sbj"] <- TRUE
       
@@ -223,31 +223,38 @@ for (k in seq_along(files.v) ) {
       problem.v <- b_1[which(z$self_POS[b_1] == "verb" & str_detect(z$self_relation[b_1], "_co") & # likely mismatches
                                str_detect(z$self_relation[b_1], "sbj_co" ) ) ]
       
-      z[sharing.v, "has_shared_sbj_cos"] <- TRUE
-      z[problem.v, "check_shared_sbj_cos"] <- TRUE
-      
-      bridge_1.v <- which(z$head == (z$head[sharing.v] %>% # index for bridge 1 (closest to sbj_cos)
-              unique() ) & z$self_relation == "coord" )
-      
-      bridge_1.v <- bridge_1.v[which(bridge_1.v %in%  z$head[which(z$head %in% bridge_1.v & z$self_relation == "sbj_co")] ) ] # drop extraneous coordinators (not connected to sbj_cos of interest)
-      
-      
-      bridge_1.v <- bridge_1.v[!is.na(bridge_1.v)]
-      
-     
-      z[bridge_1.v, "is_bridge_1_from_shared_AND_coord_sbjs"] <- TRUE
-      
-      z[z$head[sharing.v], "is_bridge_2_from_shared_AND_coord_sbjs"] <- TRUE
-      
-      z[z$head == bridge_1.v & z$self_relation == "sbj_co", "is_shared_sbj_co"] <- TRUE
-      
-      shared.v <- which(bridge_1.v & z$self_relation == "sbj_co")
-      
-      for (n in seq_along(shared.v)) {
-        col_nomen <- paste0("index_of_shared_sbj_co_", n)
-        z[sharing.v, col_nomen] <- shared.v[n]
+      if (length(sharing.v) > 0) {
+        
+        z[sharing.v, "has_shared_sbj_cos"] <- TRUE
+        z[problem.v, "check_shared_sbj_cos"] <- TRUE
+        
+        bridge_1.v <- which(z$head == (z$head[sharing.v] %>% # index for bridge 1 (closest to sbj_cos)
+                                         unique() ) & z$self_relation == "coord" )
+        
+        bridge_1.v <- bridge_1.v[which(bridge_1.v %in%  z$head[which(z$head %in% bridge_1.v & z$self_relation == "sbj_co")] ) ] # drop extraneous coordinators (not connected to sbj_cos of interest)
+        
+        
+        bridge_1.v <- bridge_1.v[!is.na(bridge_1.v)]
+        
+        
+        z[bridge_1.v, "is_bridge_1_from_shared_AND_coord_sbjs"] <- TRUE
+        
+        z[z$head[sharing.v], "is_bridge_2_from_shared_AND_coord_sbjs"] <- TRUE
+        
+        z[z$head == bridge_1.v & z$self_relation == "sbj_co", "is_shared_sbj_co"] <- TRUE
+        
+        shared.v <- which(z$head == bridge_1.v & z$self_relation == "sbj_co")
+        
+        for (n in seq_along(shared.v)) {
+          col_nomen <- paste0("index_of_shared_sbj_co_", n)
+          z[sharing.v, col_nomen] <- shared.v[n]
+          
+        }
+        
+        
         
       }
+      
       
       
       ##
@@ -258,31 +265,37 @@ for (k in seq_along(files.v) ) {
       problem.v <- b_2[which(z$self_POS[b_2] == "verb" & str_detect(z$self_relation[b_2], "_co") & # likely mismatches
                                str_detect(z$self_relation[b_2], "sbj_co" ) ) ]
       
-      z[sharing.v, "has_shared_sbj_cos"] <- TRUE
-      z[problem.v, "check_shared_sbj_cos"] <- TRUE
-      
-      bridge_1.v <- which(z$head == (z$head[sharing.v] %>% # index for bridge 1 (closest to sbj_cos)
-                                       unique() ) & z$self_relation == "coord" )
-      
-      
-      bridge_1.v <- bridge_1.v[which(bridge_1.v %in%  z$head[which(z$head %in% bridge_1.v & z$self_relation == "sbj_co")] ) ] # drop extraneous coordinators (not connected to sbj_cos of interest)
-      
-      bridge_1.v <- bridge_1.v[!is.na(bridge_1.v)] # deal with cases where bridge_1.v has only one valid value
-      
-      z[bridge_1.v, "is_bridge_1_from_shared_AND_coord_sbjs"] <- TRUE      
-      
-      
-      z[z$head[sharing.v], "is_bridge_2_from_shared_AND_coord_sbjs"] <- TRUE
-      
-      z[z$head == bridge_1.v & z$self_relation == "sbj_co", "is_shared_sbj_co"] <- TRUE
-      
-      shared.v <- which(bridge_1.v & z$self_relation == "sbj_co")
-      
-      for (n in seq_along(shared.v)) {
-        col_nomen <- paste0("index_of_shared_sbj_co_", n)
-        z[sharing.v, col_nomen] <- shared.v[n]
+      if (length(sharing.v) > 0) {
+        
+        z[sharing.v, "has_shared_sbj_cos"] <- TRUE
+        z[problem.v, "check_shared_sbj_cos"] <- TRUE
+        
+        bridge_1.v <- which(z$head == (z$head[sharing.v] %>% # index for bridge 1 (closest to sbj_cos)
+                                         unique() ) & z$self_relation == "coord" )
+        
+        
+        bridge_1.v <- bridge_1.v[which(bridge_1.v %in%  z$head[which(z$head %in% bridge_1.v & z$self_relation == "sbj_co")] ) ] # drop extraneous coordinators (not connected to sbj_cos of interest)
+        
+        bridge_1.v <- bridge_1.v[!is.na(bridge_1.v)] # deal with cases where bridge_1.v has only one valid value
+        
+        z[bridge_1.v, "is_bridge_1_from_shared_AND_coord_sbjs"] <- TRUE      
+        
+        
+        z[z$head[sharing.v], "is_bridge_2_from_shared_AND_coord_sbjs"] <- TRUE
+        
+        z[z$head == bridge_1.v & z$self_relation == "sbj_co", "is_shared_sbj_co"] <- TRUE
+        
+        shared.v <- which(z$head == bridge_1.v & z$self_relation == "sbj_co")
+        
+        for (n in seq_along(shared.v)) {
+          col_nomen <- paste0("index_of_shared_sbj_co_", n)
+          z[sharing.v, col_nomen] <- shared.v[n]
+          
+        }
         
       }
+      
+     
       
       
     }

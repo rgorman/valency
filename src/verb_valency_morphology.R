@@ -25,8 +25,8 @@ y <- c("id", "form", "lemma", "postag", "relation", "head", "artificial", "sente
 
 
 
-k <- 12
-i <- 44
+k <- 1
+i <- 154
 files.v[k]
 
 sentence.counter.v <- 1
